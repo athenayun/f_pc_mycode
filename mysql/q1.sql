@@ -16,7 +16,7 @@ select count(*) FROM db_test.cluster_1_0 ;
 
 -- create new table like
 
-create table brand_luxgen like brand_mazda ;
+create table data_5000_wth_ages like group4data_trial_complete_wthym ;
 
 describe cluster_1_0 ;
 
