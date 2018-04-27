@@ -188,3 +188,4 @@ select count(*)
 from MDPOC.dbo.GANTRY_DATA ;
 
 
+SELECT @@SERVERNAME;
