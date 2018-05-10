@@ -29,7 +29,7 @@ SELECT *
 INTO    [athena_practice].[dbo].[GantryData_20171115]
 
 FROM    [MDPOC].[dbo].[GANTRY_DATA] 
-WHERE cast(TransactionTime as date) = '2017-11- m15';
+WHERE cast(TransactionTime as date) = '2017-11-15';
 
 
 SELECT *

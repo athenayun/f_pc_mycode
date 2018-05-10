@@ -1,10 +1,26 @@
 
 /* Table4 : PRO_VEHICLE */
 
-select CONSUMER_ID, counting = count(*), 'percentage(%)' =(count(*) * 100.0 / sum(count(*)) over())
+select CONTRACT_ID, counting = count(*), 'percentage(%)' =(count(*) * 100.0 / sum(count(*)) over())
 from  [MDPOC].[dbo].[BMS_PRO_VEHICLE]
 /* where DEAD_TIME = '3000-01-01 00:00:00.000' */
-group by CONSUMER_ID ; 
+group by CONTRACT_ID ; 
+
+select CONTRACT_ID, counting = count(*), 'percentage(%)' =(count(*) * 100.0 / sum(count(*)) over())
+from  [MDPOC].[dbo].[BMS_PRO_VEHICLE]
+/* where DEAD_TIME = '3000-01-01 00:00:00.000' */
+group by CONTRACT_ID 
+having count(*)>1 ; 
+
+select *
+from  [MDPOC].[dbo].[BMS_PRO_VEHICLE]
+where CONTRACT_ID = ''	 ; 
+
+select count(*)
+from  [MDPOC].[dbo].[BMS_PRO_VEHICLE] as PE
+where PE.CONTRACT_ID not in (	select CONTRACT_ID
+								from  [MDPOC].[dbo].[BMS_PRO_VEHICLE] as subPE
+								group by subPE.CONTRACT_ID  ) ;
 
 select count(*)  FROM [MDPOC].[dbo].[BMS_PRO_VEHICLE];
 
