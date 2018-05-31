@@ -33,6 +33,13 @@ WHERE cast(TransactionTime as date) = '2017-11-15';
 
 
 SELECT *
+INTO    [athena_practice].[dbo].[GantryLog_20171115]
+
+FROM    [MDPOC].[dbo].[GANTRY_DATA] 
+WHERE cast(TransactionTime as date) = '2017-11-15';
+
+
+SELECT *
 INTO    [athena_practice].[dbo].[GantryData_20170715]
 
 FROM    [MDPOC].[dbo].[GANTRY_DATA] 
@@ -189,3 +196,9 @@ from MDPOC.dbo.GANTRY_DATA ;
 
 
 SELECT @@SERVERNAME;
+
+SELECT TOP 1000 * FROM [athena_practice].[dbo].[GantryData_20170715];
+
+select MDSequenceNum 
+from [athena_practice].[dbo].[GantryData_20171115] 
+where MDSequenceNum like '%e_1' escape 'e'

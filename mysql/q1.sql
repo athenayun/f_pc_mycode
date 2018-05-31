@@ -34,3 +34,16 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES;
 
+-- checking mysql connection
+show status like 'Con%' ;
+-- checking opened connection
+show status where `variable_name` = 'Threads_connected';
+
+show processlist ;  
+-- kill process in processlist
+kill 3967 ;
+
+
+SHOW STATUS WHERE `variable_name` = 'Max_used_connections';
+
+show status ;

@@ -117,3 +117,12 @@ FROM
     [athena_practice].[dbo].[GantryData_20171115]
 WHERE 
     MDSequenceNum like '%e_0' escape 'e' ;
+
+
+
+select *
+from [athena_practice].[dbo].[GantryData_20171115]
+where MDSequenceNum = '01F3561SA20171115T000085497728' 
+or MDSequenceNum = '01F3561SA20171115T000085497728_0' 
+or MDSequenceNum = '03F1633SA20171115T000055578490_1'
+or MDSequenceNum = '03F1633SA20171115T000055578490' ;

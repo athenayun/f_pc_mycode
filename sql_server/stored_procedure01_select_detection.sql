@@ -110,3 +110,212 @@ BEGIN
 END
 
 --END SESSION--
+
+
+-- try using cursor as a variable for return a batch of result set ?
+
+SET NOCOUNT ON;
+
+DECLARE @MDSequenceNum varchar(100),
+		@LPRNumber1 nvarchar(100),
+		@LPRNumber2 nvarchar(100),
+		@AVEID varchar(19),
+		@DetectionTime datetime2,
+		@LaneSystemID varchar(10),
+		@LaneNr numeric,
+		@Violation numeric,
+		@Category numeric,
+		@SpeedIndication numeric,
+		@TransactionTime datetime2,
+		@TagArriveTime datetime2,
+		@TagDepartTime datetime2,
+		@TransactionResult varchar(30),
+		@ReaderSN varchar(16),
+		@AuditRecord varchar(20),
+		@EPCID varchar(50),
+		@VehicleDeviceCategory varchar(2),
+		@ETagRSSIValue numeric,
+		@RFKeysetVersion varchar(20),
+		@Repeat_ varchar(10),
+		@TID varchar(30),
+		@UserData2 varchar(20),
+		@UserData3 varchar(20),
+		@PictureTime datetime2,
+		@KeepImageList varchar(5),
+		@MAC varchar(50),
+		@eTagLPRNumber nvarchar(100),
+		@StChargeFlag char(1),
+		@DecompositionFlag char(1),
+		@DeviceCategory varchar(5),
+		@DeviceStatus char(5),
+		@DeviceStatusCode char(5),
+		@Sender char(5),
+		@CheckCode varchar(40),
+		@DeviceServiceStatus char(5),
+		@DeviceVCID varchar(5),
+		@DeviceIdentity char(5),
+		@FreewayNo char(5),
+		@FreewayType char(5),
+		@FreewayKM numeric,
+		@FreewayDirection char(5),
+		@ImageRegetReturned char(5),
+		@OfflineTrans char(5),
+		@OcrSendFlag char(5),
+		@ViolationOrgn numeric,
+		@TransactionTimeOrgn datetime2,
+		@ProcessedTime datetime2,
+		@CreateId varchar(30),
+		@CreateDttm datetime2,
+		@ModifyId varchar(30),
+		@ModifyDttm datetime2 ;
+
+--  the Table Variable replaces #Temp2 in the original query
+DECLARE @Output TABLE (
+					MDSequenceNum varchar(100),
+					LPRNumber1 nvarchar(100),
+					LPRNumber2 nvarchar(100),
+					AVEID varchar(19),
+					DetectionTime datetime2,
+					LaneSystemID varchar(10),
+					LaneNr numeric,
+					Violation numeric,
+					Category numeric,
+					SpeedIndication numeric,
+					TransactionTime datetime2,
+					TagArriveTime datetime2,
+					TagDepartTime datetime2,
+					TransactionResult varchar(30),
+					ReaderSN varchar(16),
+					AuditRecord varchar(20),
+					EPCID varchar(50),
+					VehicleDeviceCategory varchar(2),
+					ETagRSSIValue numeric,
+					RFKeysetVersion varchar(20),
+					Repeat_ varchar(10),
+					TID varchar(30),
+					UserData2 varchar(20),
+					UserData3 varchar(20),
+					PictureTime datetime2,
+					KeepImageList varchar(5),
+					MAC varchar(50),
+					eTagLPRNumber nvarchar(100),
+					StChargeFlag char(1),
+					DecompositionFlag char(1),
+					DeviceCategory varchar(5),
+					DeviceStatus char(5),
+					DeviceStatusCode char(5),
+					Sender char(5),
+					CheckCode varchar(40),
+					DeviceServiceStatus char(5),
+					DeviceVCID varchar(5),
+					DeviceIdentity char(5),
+					FreewayNo char(5),
+					FreewayType char(5),
+					FreewayKM numeric,
+					FreewayDirection char(5),
+					ImageRegetReturned char(5),
+					OfflineTrans char(5),
+					OcrSendFlag char(5),
+					ViolationOrgn numeric,
+					TransactionTimeOrgn datetime2,
+					ProcessedTime datetime2,
+					CreateId varchar(30),
+					CreateDttm datetime2,
+					ModifyId varchar(30),
+					ModifyDttm datetime2
+					) ;
+
+
+
+-- the CURSOR replaces #Temp in the original query
+DECLARE crs CURSOR STATIC LOCAL READ_ONLY FORWARD_ONLY
+FOR (	select MDSequenceNum 
+		from [athena_practice].[dbo].[GantryData_20171115] 
+		where MDSequenceNum like '%e_0' escape 'e');
+
+OPEN crs;
+
+FETCH NEXT
+FROM  crs
+INTO  @Id, @Name, @Type;
+
+WHILE (@@FETCH_STATUS = 0)
+BEGIN
+    INSERT INTO @Output (Id, Name, [Type])
+    VALUES (@Id, @Name, @Type);
+
+    -- do some processing..
+
+    FETCH NEXT -- replaces the DELETE and re-SELECT in the original query
+    FROM  crs
+    INTO  @Id, @Name, @Type;
+END;
+
+CLOSE crs;
+DEALLOCATE crs;
+
+SELECT Id, Name, [Type]
+FROM   @Output;
+
+
+/*
+declare
+@MDSequenceNum varchar(100),
+@LPRNumber1 nvarchar(100),
+@LPRNumber2 nvarchar(100),
+@AVEID varchar(19),
+@DetectionTime datetime2,
+@LaneSystemID varchar(10),
+@LaneNr numeric,
+@Violation numeric,
+@Category numeric,
+@SpeedIndication numeric,
+@TransactionTime datetime2,
+@TagArriveTime datetime2,
+@TagDepartTime datetime2,
+@TransactionResult varchar(30),
+@ReaderSN varchar(16),
+@AuditRecord varchar(20),
+@EPCID varchar(50),
+@VehicleDeviceCategory varchar(2),
+@ETagRSSIValue numeric,
+@RFKeysetVersion varchar(20),
+@Repeat varchar(10),
+@TID varchar(30),
+@UserData2 varchar(20),
+@UserData3 varchar(20),
+@PictureTime datetime2,
+@KeepImageList varchar(5),
+@MAC varchar(50),
+@eTagLPRNumber nvarchar(100),
+@StChargeFlag char(1),
+@DecompositionFlag char(1),
+@DeviceCategory varchar(5),
+@DeviceStatus char(5),
+@DeviceStatusCode char(5),
+@Sender char(5),
+@CheckCode varchar(40),
+@DeviceServiceStatus char(5),
+@DeviceVCID varchar(5),
+@DeviceIdentity char(5),
+@FreewayNo char(5),
+@FreewayType char(5),
+@FreewayKM numeric,
+@FreewayDirection char(5),
+@ImageRegetReturned char(5),
+@OfflineTrans char(5),
+@OcrSendFlag char(5),
+@ViolationOrgn numeric,
+@TransactionTimeOrgn datetime2,
+@ProcessedTime datetime2,
+@CreateId varchar(30),
+@CreateDttm datetime2,
+@ModifyId varchar(30),
+@ModifyDttm datetime2
+
+*/
+
+
+  use athena_practice;
+  exec sp_help GantryData_20171115;
+  GO
